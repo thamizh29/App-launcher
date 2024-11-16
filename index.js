@@ -20,29 +20,26 @@ const apps = [
 function createAppLauncherWidget() {
   const widgetContainer = document.createElement('div');
   widgetContainer.id = 'app-launcher-widget';
-  widgetContainer.style.position = 'fixed';
+  widgetContainer.style.position = 'absolute';  // Changed to 'absolute'
+  widgetContainer.style.width = '400px'
   widgetContainer.style.backgroundColor = '#ffffff';
   widgetContainer.style.padding = '40px';
   widgetContainer.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
-  widgetContainer.style.display = 'none'; // Ensure initially hidden
+  widgetContainer.style.display = 'none'; // Initially hidden
   widgetContainer.style.zIndex = '1000';
 
   // Responsive grid layout for icons
   function adjustWidgetLayout() {
     if (window.innerWidth <= 600) { // Mobile view
       widgetContainer.style.gridTemplateColumns = 'repeat(2, 1fr)';
-      widgetContainer.style.bottom = '80px';
-      widgetContainer.style.right = '10px';
+      widgetContainer.style.gridGap = '10px';
     } else { // Desktop view
-      widgetContainer.style.gridTemplateColumns = 'repeat(3, 1fr)'; // Adjust columns as needed
-      widgetContainer.style.top = '100px';
-      widgetContainer.style.right = '10px';
+      widgetContainer.style.gridTemplateColumns = 'repeat(3, 1fr)';
+      widgetContainer.style.gridGap = '10px';
     }
-    widgetContainer.style.display = 'grid';
-    widgetContainer.style.gridGap = '10px';
   }
 
-  window.addEventListener('resize', adjustWidgetLayout); // Adjust on resize
+  window.addEventListener('resize', adjustWidgetLayout); // Adjust layout on resize
 
   // Add each app to the widget
   apps.forEach(app => {
@@ -83,9 +80,6 @@ function createAppLauncherWidget() {
 
   // Toggle button for app launcher
   const toggleButton = document.createElement('button');
-  toggleButton.style.position = 'fixed';
-  toggleButton.style.top = '20px';
-  toggleButton.style.right = '120px';
   toggleButton.style.padding = '10px';
   toggleButton.style.background = 'none';
   toggleButton.style.border = 'none';
@@ -101,6 +95,15 @@ function createAppLauncherWidget() {
   // Toggle widget display on button click
   toggleButton.addEventListener('click', (event) => {
     event.stopPropagation();
+    
+    // Get the position of the toggle button
+    const rect = toggleButton.getBoundingClientRect();
+    
+    // Set the widget position relative to the toggle button
+    widgetContainer.style.top = `${rect.bottom + window.scrollY + 10}px`;  // Add some space below the button
+    widgetContainer.style.left = `${rect.left + window.scrollX}px`;  // Align widget to the left of the button
+    
+    // Toggle visibility
     if (widgetContainer.style.display === 'none') {
       widgetContainer.style.display = 'grid';
       adjustWidgetLayout(); // Apply layout when showing
@@ -121,4 +124,3 @@ function createAppLauncherWidget() {
 
 // Call the function to create the widget structure
 createAppLauncherWidget();
-
