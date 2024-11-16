@@ -4,45 +4,31 @@ link.rel = 'stylesheet';
 link.href = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=apps';
 document.head.appendChild(link);
 
-// Define the apps to be displayed
-const apps = [
-  { name: 'NextCloud', url: 'https://auth.sagasoft.io/application/saml/nextcloud/sso/binding/init/', icon: 'public/images/nextcloud.png' },
-  { name: 'HelpDesk', url: 'https://frappe.sagasoft.io', icon: 'public/images/helpdesk-icon.png' },
-  { name: 'Insight', url: 'https://frappe.sagasoft.io', icon: 'public/images/insights28df13.png' },
-  { name: 'Frappe', url: 'https://auth.sagasoft.io//application/o/authorize/?redirect_uri=https%3A%2F%2Ffrappe.sagasoft.io%2Fapi%2Fmethod%2Ffrappe.integrations.oauth2_logins.custom%2Fauthentik&state=eyJzaXRlIjogImh0dHA6Ly9mcmFwcGUuc2FnYXNvZnQuaW8iLCAidG9rZW4iOiAiNTAxMjhiYmVhYmQ3Mzc0YjkzYWRhOTkyNzUwZmExOTYyODJlMGU5NzlkNjY3MmZiOTU3ZTcyZTYiLCAicmVkaXJlY3RfdG8iOiBudWxsfQ%3D%3D&response_type=code&scope=email+profile+openid+role_profile_name&client_id=hvroMBHNscuhjmgStAaNHmlwVyAqtXS02Nmf0YGk', icon: 'public/images/frappe.png' },
-  { name: 'Sogo', url: 'https://mx1.sagasoft.io/?iam_sso=1', icon: 'public/images/sogo.png' },
-  { name: 'Wiki', url: 'https://frappe.sagasoft.io', icon: 'public/images/wikib37899.png' },
-  { name: 'LMS', url: 'https://frappe.sagasoft.io', icon: 'public/images/lms.png' },
-  { name: 'HR', url: 'https://frappe.sagasoft.io', icon: 'public/images/hrda199d.png' },
-];
-
 // Function to create and render the widget
-function createAppLauncherWidget() {
+function createAppLauncherWidget({ apps, position }) {
+  // Remove existing widget if present
+  const existingWidget = document.getElementById('app-launcher-widget');
+  if (existingWidget) existingWidget.remove();
+
+  // Create widget container
   const widgetContainer = document.createElement('div');
   widgetContainer.id = 'app-launcher-widget';
   widgetContainer.style.position = 'fixed';
   widgetContainer.style.backgroundColor = '#ffffff';
-  widgetContainer.style.padding = '40px';
+  widgetContainer.style.padding = '20px';
   widgetContainer.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
-  widgetContainer.style.display = 'none'; // Ensure initially hidden
+  widgetContainer.style.display = 'none'; // Initially hidden
   widgetContainer.style.zIndex = '1000';
 
-  // Responsive grid layout for icons
-  function adjustWidgetLayout() {
-    if (window.innerWidth <= 600) { // Mobile view
-      widgetContainer.style.gridTemplateColumns = 'repeat(2, 1fr)';
-      widgetContainer.style.bottom = '80px';
-      widgetContainer.style.right = '10px';
-    } else { // Desktop view
-      widgetContainer.style.gridTemplateColumns = 'repeat(3, 1fr)'; // Adjust columns as needed
-      widgetContainer.style.top = '100px';
-      widgetContainer.style.right = '10px';
-    }
-    widgetContainer.style.display = 'grid';
-    widgetContainer.style.gridGap = '10px';
-  }
+  // Apply user-defined position
+  Object.entries(position).forEach(([key, value]) => {
+    widgetContainer.style[key] = value;
+  });
 
-  window.addEventListener('resize', adjustWidgetLayout); // Adjust on resize
+  // Create a grid layout for the apps
+  widgetContainer.style.display = 'grid';
+  widgetContainer.style.gridTemplateColumns = 'repeat(4, 1fr)';
+  widgetContainer.style.gridGap = '10px';
 
   // Add each app to the widget
   apps.forEach(app => {
@@ -83,9 +69,10 @@ function createAppLauncherWidget() {
 
   // Toggle button for app launcher
   const toggleButton = document.createElement('button');
+  toggleButton.id = 'toggle-app-launcher';
   toggleButton.style.position = 'fixed';
-  toggleButton.style.top = '20px';
-  toggleButton.style.right = '120px';
+  toggleButton.style.top = '10px';
+  toggleButton.style.right = '10px';
   toggleButton.style.padding = '10px';
   toggleButton.style.background = 'none';
   toggleButton.style.border = 'none';
@@ -101,12 +88,7 @@ function createAppLauncherWidget() {
   // Toggle widget display on button click
   toggleButton.addEventListener('click', (event) => {
     event.stopPropagation();
-    if (widgetContainer.style.display === 'none') {
-      widgetContainer.style.display = 'grid';
-      adjustWidgetLayout(); // Apply layout when showing
-    } else {
-      widgetContainer.style.display = 'none';
-    }
+    widgetContainer.style.display = widgetContainer.style.display === 'none' ? 'grid' : 'none';
   });
 
   document.body.appendChild(toggleButton);
@@ -119,6 +101,18 @@ function createAppLauncherWidget() {
   });
 }
 
-// Call the function to create the widget structure
-createAppLauncherWidget();
+// Example: Call the widget dynamically
+function initializeWidgetForContext() {
+  const currentApps = [
+    { name: 'NextCloud', url: 'https://example.com/nextcloud', icon: 'public/images/nextcloud.png' },
+    { name: 'Sogo', url: 'https://example.com/sogo', icon: 'public/images/sogo.png' },
+  ];
+
+  const widgetPosition = { bottom: '50px', right: '20px' };
+
+  createAppLauncherWidget({ apps: currentApps, position: widgetPosition });
+}
+
+// Call the function to create the widget dynamically in your application
+initializeWidgetForContext();
 
