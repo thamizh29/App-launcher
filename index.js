@@ -6,14 +6,14 @@ document.head.appendChild(link);
 
 // Define the apps to be displayed
 const apps = [
-  { name: 'NextCloud', url: 'https://auth.sagasoft.io/application/saml/nextcloud/sso/binding/init/', icon: 'public/images/nextcloud.png' },
-  { name: 'HelpDesk', url: 'https://frappe.sagasoft.io', icon: 'public/images/helpdesk-icon.png' },
-  { name: 'Insight', url: 'https://frappe.sagasoft.io', icon: 'public/images/insights28df13.png' },
-  { name: 'Frappe', url: 'https://auth.sagasoft.io//application/o/authorize/?redirect_uri=https%3A%2F%2Ffrappe.sagasoft.io%2Fapi%2Fmethod%2Ffrappe.integrations.oauth2_logins.custom%2Fauthentik&state=eyJzaXRlIjogImh0dHA6Ly9mcmFwcGUuc2FnYXNvZnQuaW8iLCAidG9rZW4iOiAiNTAxMjhiYmVhYmQ3Mzc0YjkzYWRhOTkyNzUwZmExOTYyODJlMGU5NzlkNjY3MmZiOTU3ZTcyZTYiLCAicmVkaXJlY3RfdG8iOiBudWxsfQ%3D%3D&response_type=code&scope=email+profile+openid+role_profile_name&client_id=hvroMBHNscuhjmgStAaNHmlwVyAqtXS02Nmf0YGk', icon: 'public/images/frappe.png' },
-  { name: 'Sogo', url: 'https://mx1.sagasoft.io/?iam_sso=1', icon: 'public/images/sogo.png' },
-  { name: 'Wiki', url: 'https://frappe.sagasoft.io', icon: 'public/images/wikib37899.png' },
-  { name: 'LMS', url: 'https://frappe.sagasoft.io', icon: 'public/images/lms.png' },
-  { name: 'HR', url: 'https://frappe.sagasoft.io', icon: 'public/images/hrda199d.png' },
+  { name: 'NextCloud', url: 'https://auth.sagasoft.io/application/saml/nextcloud/sso/binding/init/', icon: 'images/nextcloud.png' },
+  { name: 'HelpDesk', url: 'https://frappe.sagasoft.io', icon: 'images/helpdesk-icon.png' },
+  { name: 'Insight', url: 'https://frappe.sagasoft.io', icon: 'images/insights28df13.png' },
+  { name: 'Frappe', url: 'https://auth.sagasoft.io//application/o/authorize/?redirect_uri=https%3A%2F%2Ffrappe.sagasoft.io%2Fapi%2Fmethod%2Ffrappe.integrations.oauth2_logins.custom%2Fauthentik&state=eyJzaXRlIjogImh0dHA6Ly9mcmFwcGUuc2FnYXNvZnQuaW8iLCAidG9rZW4iOiAiNTAxMjhiYmVhYmQ3Mzc0YjkzYWRhOTkyNzUwZmExOTYyODJlMGU5NzlkNjY3MmZiOTU3ZTcyZTYiLCAicmVkaXJlY3RfdG8iOiBudWxsfQ%3D%3D&response_type=code&scope=email+profile+openid+role_profile_name&client_id=hvroMBHNscuhjmgStAaNHmlwVyAqtXS02Nmf0YGk', icon: 'images/frappe.png' },
+  { name: 'Sogo', url: 'https://mx1.sagasoft.io/?iam_sso=1', icon: 'images/sogo.png' },
+  { name: 'Wiki', url: 'https://frappe.sagasoft.io', icon: 'images/wikib37899.png' },
+  { name: 'LMS', url: 'https://frappe.sagasoft.io', icon: 'images/lms.png' },
+  { name: 'HR', url: 'https://frappe.sagasoft.io', icon: 'images/hrda199d.png' },
 ];
 
 // Function to create and render the widget
