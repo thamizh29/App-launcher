@@ -28,25 +28,17 @@ function createAppLauncherWidget(targetId) {
   const widgetContainer = document.createElement('div');
   widgetContainer.id = 'app-launcher-widget';
   widgetContainer.style.position = 'absolute';
-  widgetContainer.style.width = '400px';
+  widgetContainer.style.width = '300px';
   widgetContainer.style.backgroundColor = '#ffffff';
-  widgetContainer.style.padding = '40px';
+  widgetContainer.style.padding = '20px';
   widgetContainer.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+  widgetContainer.style.borderRadius = '8px';
   widgetContainer.style.display = 'none'; // Initially hidden
   widgetContainer.style.zIndex = '1000';
 
-  // Responsive grid layout for icons
-  function adjustWidgetLayout() {
-    if (window.innerWidth <= 600) { // Mobile view
-      widgetContainer.style.gridTemplateColumns = 'repeat(2, 1fr)';
-      widgetContainer.style.gridGap = '10px';
-    } else { // Desktop view
-      widgetContainer.style.gridTemplateColumns = 'repeat(3, 1fr)';
-      widgetContainer.style.gridGap = '10px';
-    }
-  }
-
-  window.addEventListener('resize', adjustWidgetLayout);
+  widgetContainer.style.gridTemplateColumns = 'repeat(3, 1fr)';
+  widgetContainer.style.display = 'grid';
+  widgetContainer.style.gridGap = '10px';
 
   // Add each app to the widget
   apps.forEach(app => {
@@ -98,11 +90,26 @@ function createAppLauncherWidget(targetId) {
     event.stopPropagation();
 
     const rect = toggleButton.getBoundingClientRect();
-    widgetContainer.style.top = `${rect.bottom + window.scrollY + 10}px`;
-    widgetContainer.style.left = `${rect.left + window.scrollX}px`;
+    const screenWidth = window.innerWidth;
 
+    // Calculate if there is more space on the left or right side of the button
+    const spaceOnLeft = rect.left;
+    const spaceOnRight = screenWidth - rect.right;
+
+    // Decide the position of the widget container
+    if (spaceOnRight >= widgetContainer.offsetWidth) {
+      // Show the widget container on the right side of the button
+      widgetContainer.style.left = `${rect.right + window.scrollX + 10}px`;
+    } else if (spaceOnLeft >= widgetContainer.offsetWidth) {
+      // Show the widget container on the left side of the button
+      widgetContainer.style.left = `${rect.left + window.scrollX - widgetContainer.offsetWidth - 10}px`;
+    } else {
+      // Default to below the button if there's not enough horizontal space
+      widgetContainer.style.left = `${rect.left + window.scrollX}px`;
+    }
+
+    widgetContainer.style.top = `${rect.bottom + window.scrollY + 10}px`;
     widgetContainer.style.display = widgetContainer.style.display === 'none' ? 'grid' : 'none';
-    adjustWidgetLayout();
   });
 
   targetElement.appendChild(toggleButton);
