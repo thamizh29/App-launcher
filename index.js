@@ -1,7 +1,7 @@
 // Include Material Symbols CSS for the icon
 const link = document.createElement('link');
 link.rel = 'stylesheet';
-link.href = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=apps';
+link.href = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0';
 document.head.appendChild(link);
 
 // Define the apps to be displayed
