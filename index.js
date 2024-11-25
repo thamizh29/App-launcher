@@ -35,7 +35,6 @@ function createAppLauncherWidget(targetId) {
   widgetContainer.style.borderRadius = '8px';
   widgetContainer.style.display = 'none'; // Initially hidden
   widgetContainer.style.zIndex = '1000';
-
   widgetContainer.style.gridTemplateColumns = 'repeat(3, 1fr)';
   widgetContainer.style.display = 'grid';
   widgetContainer.style.gridGap = '10px';
@@ -89,27 +88,24 @@ function createAppLauncherWidget(targetId) {
   toggleButton.addEventListener('click', (event) => {
     event.stopPropagation();
 
-   toggleButton.addEventListener('click', (event) => {
-  event.stopPropagation();
+    const rect = toggleButton.getBoundingClientRect();
+    const screenWidth = window.innerWidth;
 
-  const rect = toggleButton.getBoundingClientRect();
-  const screenWidth = window.innerWidth;
+    // Decide whether to show the widget on the right or left side of the button
+    if (rect.left > screenWidth / 2) {
+      // Button is on the right side of the screen, show widget on the left
+      widgetContainer.style.left = `${rect.left + window.scrollX - widgetContainer.offsetWidth - 10}px`;
+    } else {
+      // Button is on the left side of the screen, show widget on the right
+      widgetContainer.style.left = `${rect.right + window.scrollX + 10}px`;
+    }
 
-  // Decide whether to show the widget on the right or left side of the button
-  if (rect.left > screenWidth / 2) {
-    // Button is on the right side of the screen, show widget on the left
-    widgetContainer.style.left = `${rect.left + window.scrollX - widgetContainer.offsetWidth - 10}px`;
-  } else {
-    // Button is on the left side of the screen, show widget on the right
-    widgetContainer.style.left = `${rect.right + window.scrollX + 10}px`;
-  }
+    // Position widget vertically below the button
+    widgetContainer.style.top = `${rect.bottom + window.scrollY + 10}px`;
 
-  // Position widget vertically below the button
-  widgetContainer.style.top = `${rect.bottom + window.scrollY + 10}px`;
-
-  // Toggle the widget's visibility
-  widgetContainer.style.display = widgetContainer.style.display === 'none' ? 'grid' : 'none';
-});
+    // Toggle the widget's visibility
+    widgetContainer.style.display = widgetContainer.style.display === 'none' ? 'grid' : 'none';
+  });
 
   targetElement.appendChild(toggleButton);
 
