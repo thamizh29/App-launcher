@@ -89,28 +89,27 @@ function createAppLauncherWidget(targetId) {
   toggleButton.addEventListener('click', (event) => {
     event.stopPropagation();
 
-    const rect = toggleButton.getBoundingClientRect();
-    const screenWidth = window.innerWidth;
+   toggleButton.addEventListener('click', (event) => {
+  event.stopPropagation();
 
-    // Calculate if there is more space on the left or right side of the button
-    const spaceOnLeft = rect.left;
-    const spaceOnRight = screenWidth - rect.right;
+  const rect = toggleButton.getBoundingClientRect();
+  const screenWidth = window.innerWidth;
 
-    // Decide the position of the widget container
-    if (spaceOnRight >= widgetContainer.offsetWidth) {
-      // Show the widget container on the right side of the button
-      widgetContainer.style.left = `${rect.right + window.scrollX + 10}px`;
-    } else if (spaceOnLeft >= widgetContainer.offsetWidth) {
-      // Show the widget container on the left side of the button
-      widgetContainer.style.left = `${rect.left + window.scrollX - widgetContainer.offsetWidth - 10}px`;
-    } else {
-      // Default to below the button if there's not enough horizontal space
-      widgetContainer.style.left = `${rect.left + window.scrollX}px`;
-    }
+  // Decide whether to show the widget on the right or left side of the button
+  if (rect.left > screenWidth / 2) {
+    // Button is on the right side of the screen, show widget on the left
+    widgetContainer.style.left = `${rect.left + window.scrollX - widgetContainer.offsetWidth - 10}px`;
+  } else {
+    // Button is on the left side of the screen, show widget on the right
+    widgetContainer.style.left = `${rect.right + window.scrollX + 10}px`;
+  }
 
-    widgetContainer.style.top = `${rect.bottom + window.scrollY + 10}px`;
-    widgetContainer.style.display = widgetContainer.style.display === 'none' ? 'grid' : 'none';
-  });
+  // Position widget vertically below the button
+  widgetContainer.style.top = `${rect.bottom + window.scrollY + 10}px`;
+
+  // Toggle the widget's visibility
+  widgetContainer.style.display = widgetContainer.style.display === 'none' ? 'grid' : 'none';
+});
 
   targetElement.appendChild(toggleButton);
 
