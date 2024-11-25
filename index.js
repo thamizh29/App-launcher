@@ -17,11 +17,18 @@ const apps = [
 ];
 
 // Function to create and render the widget
-function createAppLauncherWidget() {
+function createAppLauncherWidget(targetId) {
+  const targetElement = document.getElementById(targetId);
+
+  if (!targetElement) {
+    console.error(`Element with ID "${targetId}" not found.`);
+    return;
+  }
+
   const widgetContainer = document.createElement('div');
   widgetContainer.id = 'app-launcher-widget';
-  widgetContainer.style.position = 'absolute';  // Changed to 'absolute'
-  widgetContainer.style.width = '400px'
+  widgetContainer.style.position = 'absolute';
+  widgetContainer.style.width = '400px';
   widgetContainer.style.backgroundColor = '#ffffff';
   widgetContainer.style.padding = '40px';
   widgetContainer.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
@@ -39,7 +46,7 @@ function createAppLauncherWidget() {
     }
   }
 
-  window.addEventListener('resize', adjustWidgetLayout); // Adjust layout on resize
+  window.addEventListener('resize', adjustWidgetLayout);
 
   // Add each app to the widget
   apps.forEach(app => {
@@ -51,7 +58,6 @@ function createAppLauncherWidget() {
     appDiv.style.fontSize = '12px';
     appDiv.style.textAlign = 'center';
 
-    // App icon
     const appIcon = document.createElement('img');
     appIcon.src = app.icon;
     appIcon.alt = app.name;
@@ -59,16 +65,13 @@ function createAppLauncherWidget() {
     appIcon.style.height = '40px';
     appIcon.style.borderRadius = '4px';
 
-    // App name
     const appName = document.createElement('p');
     appName.textContent = app.name;
     appName.style.margin = '5px 0 0';
 
-    // Append icon and name to the app div
     appDiv.appendChild(appIcon);
     appDiv.appendChild(appName);
 
-    // Add click event to redirect to the app's URL
     appDiv.addEventListener('click', () => {
       window.open(app.url, '_blank');
     });
@@ -76,9 +79,8 @@ function createAppLauncherWidget() {
     widgetContainer.appendChild(appDiv);
   });
 
-  document.body.appendChild(widgetContainer);
+  targetElement.appendChild(widgetContainer);
 
-  // Toggle button for app launcher
   const toggleButton = document.createElement('button');
   toggleButton.style.padding = '10px';
   toggleButton.style.background = 'none';
@@ -92,29 +94,19 @@ function createAppLauncherWidget() {
   appIcon.style.fontSize = '38px';
   toggleButton.appendChild(appIcon);
 
-  // Toggle widget display on button click
   toggleButton.addEventListener('click', (event) => {
     event.stopPropagation();
-    
-    // Get the position of the toggle button
+
     const rect = toggleButton.getBoundingClientRect();
-    
-    // Set the widget position relative to the toggle button
-    widgetContainer.style.top = `${rect.bottom + window.scrollY + 10}px`;  // Add some space below the button
-    widgetContainer.style.left = `${rect.left + window.scrollX}px`;  // Align widget to the left of the button
-    
-    // Toggle visibility
-    if (widgetContainer.style.display === 'none') {
-      widgetContainer.style.display = 'grid';
-      adjustWidgetLayout(); // Apply layout when showing
-    } else {
-      widgetContainer.style.display = 'none';
-    }
+    widgetContainer.style.top = `${rect.bottom + window.scrollY + 10}px`;
+    widgetContainer.style.left = `${rect.left + window.scrollX}px`;
+
+    widgetContainer.style.display = widgetContainer.style.display === 'none' ? 'grid' : 'none';
+    adjustWidgetLayout();
   });
 
-  document.body.appendChild(toggleButton);
+  targetElement.appendChild(toggleButton);
 
-  // Close widget when clicking outside
   document.addEventListener('click', (event) => {
     if (!widgetContainer.contains(event.target) && !toggleButton.contains(event.target)) {
       widgetContainer.style.display = 'none';
@@ -122,5 +114,6 @@ function createAppLauncherWidget() {
   });
 }
 
-// Call the function to create the widget structure
-createAppLauncherWidget();
+// Call the function with a specific ID
+createAppLauncherWidget('my-widget-container');
+
